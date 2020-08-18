@@ -1,32 +1,19 @@
 // 【件名フォーマット（恐らく固定）】
-// 【DMM英会話】レッスン予約完了のお知らせ
+// レッスン予約
 
 // 【予約内容フォーマット】
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ■　英会話 レッスン予約完了のお知らせ
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 講師名：XXXX XXXX
-// 講師Skype名：online.teacher.xxxxxx
-// ご予約日：2015年11月04日
-// 開始時間：21時30分
+// HTMLメールになっているので↓の文章で探す
+// "XXX様、2019/mm/dd HH:MMのXXXXとのレッスン予約が完了しました。レッスン開始の数分前にレッスンに参加してください。"
 
-var CALENDAR_NAME = 'DMM_English_Lessons';
-var MAIL_SEARCH_QUERY = 'newer_than:1d subject:"【DMM英会話】レッスン予約完了のお知らせ"';
-var BODY_SEARCH_QUERY = '■　英会話 レッスン予約完了のお知らせ';
+var MAIL_SEARCH_QUERY = 'newer_than:1d subject:"レッスン予約"';
+var BODY_SEARCH_QUERY = 'レッスン予約が完了しました';
 
 var EVENT_TITLE = '【DMM英会話】';
 var MY_NAME = "XXX";
 
 function registDmmCalendar() {
-
-    // 指定したカレンダーを取得（無ければ作成）
-    var calendars = CalendarApp.getCalendarsByName(CALENDAR_NAME);
-    var calendar;
-    if (calendars.length === 0) {
-        calendar = CalendarApp.createCalendar(CALENDAR_NAME);
-    } else {
-        calendar = calendars[0];
-    }
+    // メインのカレンダーに登録する
+    var calendar = CalendarApp.getDefaultCalendar();
 
     var row = 1;
     // Gmailから指定文字列でスレッドを検索する
@@ -50,7 +37,7 @@ function registDmmCalendar() {
 
                     // フォーマット
                     // "XXX様、2019/mm/dd HH:MMのXXXXとのレッスン予約が完了しました。レッスン開始の数分前にレッスンに参加してください。"
-                    var str = splitedBody[k+4];
+                    var str = splitedBody[k];
 
                     // 文頭の自分の名前を削除
                     // -> "様、2019/mm/dd HH:MMのXXXXとのレッスン予約が完了しました。レッスン開始の数分前にレッスンに参加してください。"
